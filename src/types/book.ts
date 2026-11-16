@@ -8,6 +8,9 @@ export type BookCategory = "textbooks" | "novels" | "self-help" | "science" | "o
 /** "all" is a filter value only — a book always has a real category. */
 export type CategoryFilterValue = BookCategory | "all";
 
+/** Sort orders for book lists. "featured" keeps the data file's order. */
+export type BookSort = "featured" | "title-asc" | "title-desc" | "price-asc" | "price-desc";
+
 export type Availability = "swap" | "buy" | "borrow";
 
 /** Index into the --cover-N palette in src/styles.css. */

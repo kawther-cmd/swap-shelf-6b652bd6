@@ -3,24 +3,28 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CommunitySection } from "@/components/home/CommunitySection";
 import { FeaturedBooks } from "@/components/home/FeaturedBooks";
 import { HeroSection } from "@/components/home/HeroSection";
-import { SAMPLE_BOOKS } from "@/data/books";
 import { isCategoryFilterValue } from "@/data/categories";
-import type { BookCategory, CategoryFilterValue } from "@/types/book";
+import { isBookSort } from "@/data/sort-options";
+import type { BookCategory, BookSort, CategoryFilterValue } from "@/types/book";
 
 interface HomeSearch {
-  /** Search text from the navbar. */
+  /** Search text (navbar or Featured Books search box). */
   q?: string | undefined;
   /** Selected category; omitted means "All Books". */
   category?: BookCategory | undefined;
+  /** Sort order; omitted means "featured". */
+  sort?: BookSort | undefined;
 }
 
 export const Route = createFileRoute("/")({
   validateSearch: (search: Record<string, unknown>): HomeSearch => {
     const q = search["q"];
     const category = search["category"];
+    const sort = search["sort"];
     return {
       q: typeof q === "string" && q.trim() ? q : undefined,
       category: isCategoryFilterValue(category) && category !== "all" ? category : undefined,
+      sort: isBookSort(sort) && sort !== "featured" ? sort : undefined,
     };
   },
   head: () => ({
@@ -41,27 +45,26 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
-  const { q, category } = Route.useSearch();
+  const { q, category, sort } = Route.useSearch();
   const navigate = Route.useNavigate();
 
-  const handleCategoryChange = (value: CategoryFilterValue) =>
-    navigate({
-      search: (prev) => ({ ...prev, category: value === "all" ? undefined : value }),
-      resetScroll: false,
-    });
-
-  const handleClearFilters = () =>
-    navigate({ search: { q: undefined, category: undefined }, resetScroll: false });
+  // Filter changes update the URL (replace, no scroll jump) so they can be shared and bookmarked.
+  const updateSearch = (patch: HomeSearch) =>
+    navigate({ search: (prev) => ({ ...prev, ...patch }), replace: true, resetScroll: false });
 
   return (
     <>
       <HeroSection />
       <FeaturedBooks
-        books={SAMPLE_BOOKS}
         category={category ?? "all"}
-        query={q}
-        onCategoryChange={handleCategoryChange}
-        onClearFilters={handleClearFilters}
+        query={q ?? ""}
+        sort={sort ?? "featured"}
+        onCategoryChange={(value: CategoryFilterValue) =>
+          updateSearch({ category: value === "all" ? undefined : value })
+        }
+        onQueryChange={(value) => updateSearch({ q: value || undefined })}
+        onSortChange={(value: BookSort) => updateSearch({ sort: value === "featured" ? undefined : value })}
+        onClearFilters={() => updateSearch({ q: undefined, category: undefined })}
       />
       <CommunitySection />
     </>

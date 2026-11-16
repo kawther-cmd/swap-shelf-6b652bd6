@@ -33,6 +33,6 @@ use the editor.
 
 - Routing uses TanStack Router file routes in `src/routes` (one file per page); route files stay thin and render components from `src/components/<area>/` so team members can work on areas independently.
 - Book data shapes live in `src/types/book.ts`; sample data in `src/data/`; swap the data source there without touching components.
-- All book filtering goes through `filterBooks` in `src/lib/book-filters.ts`; home page filter state (search `q`, `category`) lives in the URL search params so the navbar search and category buttons share it.
+- All book filtering and sorting goes through `src/lib/book-filters.ts` (`getVisibleBooks`); the book list and favorites live in React state via `useBooks`; home page filter state (`q`, `category`, `sort`) lives in the URL search params so the navbar search and category buttons share it.
 - No backend or real authentication: Login/Register are frontend-only forms that show a toast.
 - Book covers without an image are drawn by `BookCover` from the `--cover-N` tokens in `src/styles.css`.
