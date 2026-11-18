@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 
 import { Logo } from "./Logo";
+import { ALL_PAGE_LINKS } from "./nav-links";
 
 export function SiteFooter() {
   return (
@@ -13,18 +14,15 @@ export function SiteFooter() {
           </p>
         </div>
         <nav aria-label="Footer" className="flex flex-wrap gap-x-8 gap-y-3 text-sm font-medium">
-          <Link to="/" className="text-muted-foreground transition hover:text-primary">
-            Home
-          </Link>
-          <Link to="/about" className="text-muted-foreground transition hover:text-primary">
-            About
-          </Link>
-          <Link to="/login" className="text-muted-foreground transition hover:text-primary">
-            Login
-          </Link>
-          <Link to="/register" className="text-muted-foreground transition hover:text-primary">
-            Register
-          </Link>
+          {ALL_PAGE_LINKS.map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className="text-muted-foreground transition hover:text-primary"
+            >
+              {link.label}
+            </Link>
+          ))}
         </nav>
       </div>
       <div className="border-t border-border/70 py-5 text-center text-xs text-muted-foreground">

@@ -4,13 +4,7 @@ import { useState } from "react";
 
 import { Logo } from "./Logo";
 import { NavSearch } from "./NavSearch";
-
-/** Links shown in the navbar. Add a page here once its route file exists. */
-const NAV_LINKS = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/login", label: "Login" },
-];
+import { NAV_LINKS, REGISTER_LINK } from "./nav-links";
 
 const linkClass =
   "rounded-full px-3.5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground";
@@ -40,10 +34,10 @@ export function Navbar() {
           ))}
           <li>
             <Link
-              to="/register"
+              to={REGISTER_LINK.to}
               className="ml-1 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-soft transition hover:-translate-y-0.5 hover:bg-primary-soft"
             >
-              Register
+              {REGISTER_LINK.label}
             </Link>
           </li>
         </ul>
@@ -92,11 +86,11 @@ export function Navbar() {
             ))}
             <li>
               <Link
-                to="/register"
+                to={REGISTER_LINK.to}
                 onClick={closeMenu}
                 className="mt-2 block rounded-full bg-primary px-4 py-2.5 text-center text-sm font-semibold text-primary-foreground"
               >
-                Register
+                {REGISTER_LINK.label}
               </Link>
             </li>
           </ul>

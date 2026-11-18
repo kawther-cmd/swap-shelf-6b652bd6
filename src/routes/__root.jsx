@@ -10,9 +10,7 @@ import {
 import { useEffect } from "react";
 
 import appCss from "../styles.css?url";
-import { Navbar } from "@/components/layout/Navbar";
-import { SiteFooter } from "@/components/layout/SiteFooter";
-import { Toaster } from "@/components/ui/sonner";
+import { AppLayout } from "@/components/layout/AppLayout";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -136,15 +134,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <div className="flex min-h-screen flex-col">
-        <Navbar />
-        <main className="flex-1">
-          <Outlet />
-        </main>
-        <SiteFooter />
-      </div>
-      <Toaster position="top-center" richColors />
+      {/* App frame (Navbar + footer). Required: pages render through <Outlet />. */}
+      <AppLayout>
+        <Outlet />
+      </AppLayout>
     </QueryClientProvider>
   );
 }
